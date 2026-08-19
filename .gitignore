@@ -146,9 +146,10 @@ activemq-data/
 
 # SageMath parsed files
 *.sage.py
+# Generated ML artifacts
+artifacts/
 
 # Environments
-.artifacts/
 .env
 .envrc
 .venv
