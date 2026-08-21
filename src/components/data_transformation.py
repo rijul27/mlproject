@@ -193,12 +193,24 @@ class DataTransformation:
             # Separate the input features and target variable for both training and testing datasets
             numerical_columns = ["reading_score", "writing_score"]
 
-            # Separate input features and target variable for training data
-            input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)
+            # # Separate input features and target variable for training data
+            # input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)
+            # target_feature_train_df = train_df[target_column_name]
+
+            # # Separate input features and target variable for testing data
+            # input_feature_test_df = test_df.drop(columns=[target_column_name], axis=1)
+            # target_feature_test_df = test_df[target_column_name]
+
+            # Separate training features (X_train) and target (y_train)
+
+            input_feature_train_df = train_df.drop(columns=[target_column_name])
+
             target_feature_train_df = train_df[target_column_name]
 
-            # Separate input features and target variable for testing data
-            input_feature_test_df = test_df.drop(columns=[target_column_name], axis=1)
+            # Separate testing features (X_test) and target (y_test)
+
+            input_feature_test_df = test_df.drop(columns=[target_column_name])
+
             target_feature_test_df = test_df[target_column_name]
 
             # APPLY PREPROCESSING
