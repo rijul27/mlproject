@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Student Performance AI | Prediction
+    </title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+
+            --primary: #4f46e5;
+
+            --primary-dark: #3730a3;
+
+            --dark: #111827;
+
+            --text: #374151;
+
+            --muted: #6b7280;
+
+            --background: #f8fafc;
+
+            --white: #ffffff;
+
+            --border: #e5e7eb;
+
+            --green: #059669;
+
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background: var(--background);
+
+            color: var(--text);
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        nav {
+
+            height: 72px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+            background:
+                rgba(255,255,255,.95);
+
+            border-bottom:
+                1px solid var(--border);
+
+            backdrop-filter:
+                blur(15px);
+
+        }
+
+
+        .logo {
+
+            color: var(--dark);
+
+            text-decoration: none;
+
+            font-size: 19px;
+
+            font-weight: 850;
+
+        }
+
+
+        .logo span {
+            color: var(--primary);
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 24px;
+
+        }
+
+
+        .nav-links a {
+
+            color: var(--text);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 650;
+
+        }
+
+
+        .nav-links a:hover {
+
+            color: var(--primary);
+
+        }
+
+
+        .nav-predict {
+
+            padding: 9px 15px;
+
+            border-radius: 9px;
+
+            color: white !important;
+
+            background: var(--primary);
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            padding:
+                75px 8% 60px;
+
+            text-align: center;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #e0e7ff,
+                    transparent 55%
+                );
+
+        }
+
+
+        .hero small {
+
+            color: var(--primary);
+
+            font-size: 10px;
+
+            font-weight: 850;
+
+            letter-spacing: 1.5px;
+
+        }
+
+
+        .hero h1 {
+
+            margin-top: 10px;
+
+            color: var(--dark);
+
+            font-size:
+                clamp(37px,5vw,58px);
+
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+
+        }
+
+
+        .hero h1 span {
+
+            color: var(--primary);
+
+        }
+
+
+        .hero p {
+
+            max-width: 680px;
+
+            margin: 14px auto 0;
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .container {
+
+            width: 84%;
+
+            max-width: 1200px;
+
+            margin: auto;
+
+        }
+
+
+        .section {
+
+            padding: 75px 0;
+
+        }
+
+
+        .heading {
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .heading small {
+
+            color: var(--primary);
+
+            font-size: 10px;
+
+            font-weight: 850;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .heading h2 {
+
+            margin-top: 6px;
+
+            color: var(--dark);
+
+            font-size: 34px;
+
+            letter-spacing: -1px;
+
+        }
+
+
+        .heading p {
+
+            margin-top: 7px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           PREDICTION CARD
+        ===================================================== */
+
+        .prediction-card {
+
+            padding: 35px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 23px;
+
+            background: white;
+
+            box-shadow:
+                0 25px 60px
+                rgba(15,23,42,.08);
+
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 21px;
+
+        }
+
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+        }
+
+
+        .form-group.full {
+
+            grid-column:
+                1 / -1;
+
+        }
+
+
+        .form-group label {
+
+            color: var(--dark);
+
+            font-size: 12px;
+
+            font-weight: 750;
+
+        }
+
+
+        .form-group input,
+        .form-group select {
+
+            width: 100%;
+
+            height: 48px;
+
+            padding:
+                0 13px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
+
+            outline: none;
+
+            color: var(--text);
+
+            background: white;
+
+            font-size: 12px;
+
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus {
+
+            border-color:
+                var(--primary);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(79,70,229,.10);
+
+        }
+
+
+        .predict-button {
+
+            grid-column:
+                1 / -1;
+
+            height: 52px;
+
+            margin-top: 7px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            font-size: 13px;
+
+            font-weight: 850;
+
+            box-shadow:
+                0 12px 25px
+                rgba(79,70,229,.20);
+
+            transition: .2s;
+
+        }
+
+
+        .predict-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #3730a3,
+                    #4f46e5
+                );
+
+        }
+
+
+        /* =====================================================
+           RESULT
+        ===================================================== */
+
+        .result-card {
+
+            margin-top: 25px;
+
+            padding: 30px;
+
+            border:
+                1px solid #c7d2fe;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #ffffff
+                );
+
+        }
+
+
+        .result-card small {
+
+            color: var(--primary);
+
+            font-size: 10px;
+
+            font-weight: 850;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .result-card h2 {
+
+            margin: 8px 0;
+
+            color: var(--primary);
+
+            font-size: 58px;
+
+            line-height: 1;
+
+        }
+
+
+        .result-card p {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           DATASET STATS
+        ===================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .stat {
+
+            padding: 22px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            background: white;
+
+        }
+
+
+        .stat strong {
+
+            display: block;
+
+            color: var(--primary);
+
+            font-size: 28px;
+
+        }
+
+
+        .stat span {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-card {
+
+            overflow: hidden;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 18px;
+
+            background: white;
+
+        }
+
+
+        .table-wrapper {
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            min-width: 700px;
+
+            border-collapse: collapse;
+
+        }
+
+
+        th {
+
+            padding: 15px;
+
+            text-align: left;
+
+            color: var(--dark);
+
+            background: #f8fafc;
+
+            font-size: 11px;
+
+        }
+
+
+        td {
+
+            padding: 15px;
+
+            border-top:
+                1px solid var(--border);
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        td:first-child {
+
+            color: var(--dark);
+
+            font-weight: 750;
+
+        }
+
+
+        /* =====================================================
+           EDA
+        ===================================================== */
+
+        .eda-intro {
+
+            padding: 25px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid #c7d2fe;
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #f8fafc
+                );
+
+        }
+
+
+        .eda-intro h3 {
+
+            margin-bottom: 7px;
+
+            color: var(--dark);
+
+            font-size: 17px;
+
+        }
+
+
+        .eda-intro p {
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.8;
+
+        }
+
+
+        .eda-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 16px;
+
+        }
+
+
+        .eda-card {
+
+            position: relative;
+
+            padding: 24px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 17px;
+
+            background: white;
+
+            transition: .2s;
+
+        }
+
+
+        .eda-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 18px 40px
+                rgba(15,23,42,.07);
+
+        }
+
+
+        .eda-number {
+
+            display: grid;
+
+            place-items: center;
+
+            width: 35px;
+
+            height: 35px;
+
+            margin-bottom: 14px;
+
+            border-radius: 10px;
+
+            color: var(--primary);
+
+            background: #eef2ff;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+        }
+
+
+        .eda-card h3 {
+
+            margin-bottom: 8px;
+
+            color: var(--dark);
+
+            font-size: 15px;
+
+        }
+
+
+        .eda-card p {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.75;
+
+        }
+
+
+        /* =====================================================
+           EDA METRICS
+        ===================================================== */
+
+        .metric-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .metric {
+
+            padding: 22px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            background: white;
+
+        }
+
+
+        .metric-value {
+
+            color: var(--primary);
+
+            font-size: 25px;
+
+            font-weight: 900;
+
+        }
+
+
+        .metric-title {
+
+            margin-top: 3px;
+
+            color: var(--dark);
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+        }
+
+
+        .metric-description {
+
+            margin-top: 5px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           INSIGHTS
+        ===================================================== */
+
+        .insight-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .insight {
+
+            padding: 23px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            background: white;
+
+        }
+
+
+        .insight h3 {
+
+            margin-bottom: 7px;
+
+            color: var(--dark);
+
+            font-size: 14px;
+
+        }
+
+
+        .insight p {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =====================================================
+           PIPELINE
+        ===================================================== */
+
+        .pipeline {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .pipeline-card {
+
+            padding: 22px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            background: white;
+
+        }
+
+
+        .pipeline-card strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: var(--dark);
+
+            font-size: 13px;
+
+        }
+
+
+        .pipeline-card span {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            margin-top: 60px;
+
+            padding: 32px;
+
+            border-top:
+                1px solid var(--border);
+
+            background: white;
+
+            color: var(--muted);
+
+            text-align: center;
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width:1000px) {
+
+            .eda-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+            .pipeline {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+        }
+
+
+        @media(max-width:700px) {
+
+            .nav-links a:not(.nav-predict) {
+
+                display: none;
+
+            }
+
+            .container {
+
+                width: 92%;
+
+            }
+
+            .prediction-card {
+
+                padding: 22px;
+
+            }
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .form-group.full {
+
+                grid-column: auto;
+
+            }
+
+            .predict-button {
+
+                grid-column: auto;
+
+            }
+
+            .eda-grid,
+            .metric-grid,
+            .insight-grid,
+            .pipeline {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav>
+
+    <a
+        href="{{ url_for('index') }}"
+        class="logo"
+    >
+        Student <span>Performance AI</span>
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('index') }}">
+            Home
+        </a>
+
+        <a href="#dataset">
+            Dataset
+        </a>
+
+        <a href="#eda">
+            EDA
+        </a>
+
+        <a href="#pipeline">
+            Pipeline
+        </a>
+
+        <a
+            href="#predict"
+            class="nav-predict"
+        >
+            Try Prediction
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <small>
+        STUDENT PERFORMANCE AI
+    </small>
+
+    <h1>
+        Mathematics Score
+        <span>Prediction</span>
+    </h1>
+
+    <p>
+        Explore the dataset, understand the EDA findings and
+        generate a mathematics score prediction using the
+        trained machine learning model.
+    </p>
+
+</section>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     PREDICTION
+===================================================== -->
+
+<section
+    class="section"
+    id="predict"
+>
+
+    <div class="heading">
+
+        <small>
+            Prediction
+        </small>
+
+        <h2>
+            Predict Student Performance
+        </h2>
+
+        <p>
+            Enter the student's demographic and academic
+            information below.
+        </p>
+
+    </div>
+
+
+    <div class="prediction-card">
+
+
+        <!-- =================================================
+             FORM
+
+             IMPORTANT:
+             This form is NOT inside the result condition.
+
+             Therefore it remains visible after prediction.
+        ================================================== -->
+
+        <form
+            action="{{ url_for('predict_datapoint') }}"
+            method="post"
+            class="form-grid"
+        >
+
+
+            <div class="form-group">
+
+                <label>
+                    Gender
+                </label>
+
+                <select
+                    name="gender"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Select Gender
+                    </option>
+
+                    <option value="male">
+                        Male
+                    </option>
+
+                    <option value="female">
+                        Female
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Race / Ethnicity
+                </label>
+
+                <select
+                    name="ethnicity"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Select Group
+                    </option>
+
+                    <option value="group A">
+                        Group A
+                    </option>
+
+                    <option value="group B">
+                        Group B
+                    </option>
+
+                    <option value="group C">
+                        Group C
+                    </option>
+
+                    <option value="group D">
+                        Group D
+                    </option>
+
+                    <option value="group E">
+                        Group E
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Parental Level of Education
+                </label>
+
+                <select
+                    name="parental_level_of_education"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Select Education
+                    </option>
+
+                    <option value="some high school">
+                        Some High School
+                    </option>
+
+                    <option value="high school">
+                        High School
+                    </option>
+
+                    <option value="some college">
+                        Some College
+                    </option>
+
+                    <option value="associate's degree">
+                        Associate's Degree
+                    </option>
+
+                    <option value="bachelor's degree">
+                        Bachelor's Degree
+                    </option>
+
+                    <option value="master's degree">
+                        Master's Degree
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Lunch
+                </label>
+
+                <select
+                    name="lunch"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Select Lunch
+                    </option>
+
+                    <option value="standard">
+                        Standard
+                    </option>
+
+                    <option value="free/reduced">
+                        Free / Reduced
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Test Preparation Course
+                </label>
+
+                <select
+                    name="test_preparation_course"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Select Course
+                    </option>
+
+                    <option value="none">
+                        None
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Reading Score
+                </label>
+
+                <input
+                    type="number"
+                    name="reading_score"
+                    min="0"
+                    max="100"
+                    placeholder="0 - 100"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Writing Score
+                </label>
+
+                <input
+                    type="number"
+                    name="writing_score"
+                    min="0"
+                    max="100"
+                    placeholder="0 - 100"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="predict-button"
+            >
+                Predict Mathematics Score →
+            </button>
+
+
+        </form>
+
+
+        <!-- =================================================
+             RESULT
+
+             ONLY THIS PART IS CONDITIONAL.
+        ================================================== -->
+
+        {% if results is defined and results is not none %}
+
+        <div class="result-card">
+
+            <small>
+                Prediction Generated
+            </small>
+
+            <h2>
+                {{ "%.2f"|format(results) }}
+            </h2>
+
+            <p>
+                Predicted Mathematics Score out of 100
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DATASET OVERVIEW
+===================================================== -->
+
+<section
+    class="section"
+    id="dataset"
+>
+
+    <div class="heading">
+
+        <small>
+            Dataset Overview
+        </small>
+
+        <h2>
+            Understanding the Data
+        </h2>
+
+        <p>
+            The dataset contains student demographic information,
+            socioeconomic indicators and examination scores.
+        </p>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <strong>
+                1,000
+            </strong>
+
+            <span>
+                Student Records
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                8
+            </strong>
+
+            <span>
+                Dataset Columns
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                7
+            </strong>
+
+            <span>
+                Input Features
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                1
+            </strong>
+
+            <span>
+                Target Variable
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="section">
+
+    <div class="heading">
+
+        <small>
+            Features
+        </small>
+
+        <h2>
+            Dataset Variables
+        </h2>
+
+    </div>
+
+
+    <div class="table-card">
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Feature
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Role
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+                        <td>gender</td>
+                        <td>Categorical</td>
+                        <td>Student gender</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>race_ethnicity</td>
+                        <td>Categorical</td>
+                        <td>Student group</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>parental_level_of_education</td>
+                        <td>Categorical</td>
+                        <td>Parent education level</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>lunch</td>
+                        <td>Categorical</td>
+                        <td>Lunch category</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>test_preparation_course</td>
+                        <td>Categorical</td>
+                        <td>Preparation status</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>reading_score</td>
+                        <td>Numerical</td>
+                        <td>Reading examination score</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>writing_score</td>
+                        <td>Numerical</td>
+                        <td>Writing examination score</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>math_score</td>
+                        <td>Numerical</td>
+                        <td>Mathematics examination score</td>
+                        <td>Target</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     EDA
+===================================================== -->
+
+<section
+    class="section"
+    id="eda"
+>
+
+    <div class="heading">
+
+        <small>
+            Exploratory Data Analysis
+        </small>
+
+        <h2>
+            What did we discover?
+        </h2>
+
+        <p>
+            EDA was used to understand data quality, distributions,
+            categorical relationships and correlations before
+            model training.
+        </p>
+
+    </div>
+
+
+    <!-- EDA INTRO -->
+
+    <div class="eda-intro">
+
+        <h3>
+            Why EDA matters
+        </h3>
+
+        <p>
+            Exploratory Data Analysis helps us understand the
+            structure of the dataset before applying machine
+            learning. It allows us to inspect distributions,
+            compare groups, identify relationships between
+            variables and check whether the data contains
+            quality issues that need to be addressed during
+            preprocessing.
+        </p>
+
+    </div>
+
+
+    <!-- EDA FINDINGS -->
+
+    <div class="eda-grid">
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                01
+            </div>
+
+            <h3>
+                Dataset Structure
+            </h3>
+
+            <p>
+                The dataset contains 1,000 student records and
+                8 columns. It includes 5 categorical features,
+                2 numerical input features and the mathematics
+                score as the target.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                02
+            </div>
+
+            <h3>
+                Data Quality
+            </h3>
+
+            <p>
+                The dataset was inspected for missing values,
+                duplicated rows and data types before moving
+                into the machine learning pipeline.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                03
+            </div>
+
+            <h3>
+                Score Distribution
+            </h3>
+
+            <p>
+                The average-score distribution is roughly
+                bell-shaped, with most students having scores
+                in the approximately 60–80 range.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                04
+            </div>
+
+            <h3>
+                Mathematics Score
+            </h3>
+
+            <p>
+                Mathematics has a lower minimum score compared
+                with reading and writing and contains more
+                extremely low observations.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                05
+            </div>
+
+            <h3>
+                Reading vs Mathematics
+            </h3>
+
+            <p>
+                Students with stronger reading scores generally
+                tend to have stronger mathematics scores,
+                indicating a strong positive relationship.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                06
+            </div>
+
+            <h3>
+                Writing vs Mathematics
+            </h3>
+
+            <p>
+                Writing scores also show a strong positive
+                relationship with mathematics performance.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                07
+            </div>
+
+            <h3>
+                Subject Correlation
+            </h3>
+
+            <p>
+                Mathematics, reading and writing have strong
+                positive correlations, approximately in the
+                0.8–0.85 range.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                08
+            </div>
+
+            <h3>
+                Test Preparation
+            </h3>
+
+            <p>
+                Students who completed the test preparation
+                course perform better across mathematics,
+                reading and writing.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                09
+            </div>
+
+            <h3>
+                Lunch Analysis
+            </h3>
+
+            <p>
+                Students receiving standard lunch have higher
+                average scores compared with students receiving
+                free/reduced lunch.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                10
+            </div>
+
+            <h3>
+                Parental Education
+            </h3>
+
+            <p>
+                Students whose parents have bachelor's or
+                master's degrees show higher average academic
+                performance.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                11
+            </div>
+
+            <h3>
+                Race / Ethnicity
+            </h3>
+
+            <p>
+                Group E shows the highest average performance,
+                while Group A tends to show the lowest average
+                performance across the subjects.
+            </p>
+
+        </div>
+
+
+        <div class="eda-card">
+
+            <div class="eda-number">
+                12
+            </div>
+
+            <h3>
+                Gender Analysis
+            </h3>
+
+            <p>
+                Female students lead in overall average
+                performance, while male students show slightly
+                higher average mathematics scores.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- EDA METRICS -->
+
+    <div class="metric-grid">
+
+
+        <div class="metric">
+
+            <div class="metric-value">
+                ~0.8–0.85
+            </div>
+
+            <div class="metric-title">
+                Strong Subject Correlation
+            </div>
+
+            <div class="metric-description">
+                Mathematics, reading and writing scores
+                move together strongly.
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-value">
+                60–80
+            </div>
+
+            <div class="metric-title">
+                Common Score Range
+            </div>
+
+            <div class="metric-description">
+                Most students fall within this approximate
+                average-score range.
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-value">
+                1,000
+            </div>
+
+            <div class="metric-title">
+                Student Records
+            </div>
+
+            <div class="metric-description">
+                The dataset provides a broad sample for
+                exploring student performance.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     KEY EDA INSIGHTS
+===================================================== -->
+
+<section class="section">
+
+    <div class="heading">
+
+        <small>
+            EDA Takeaways
+        </small>
+
+        <h2>
+            What does this mean for the model?
+        </h2>
+
+        <p>
+            These observations help explain why the selected
+            features can be useful for predicting mathematics
+            performance.
+        </p>
+
+    </div>
+
+
+    <div class="insight-grid">
+
+
+        <div class="insight">
+
+            <h3>
+                Academic Scores Are Important
+            </h3>
+
+            <p>
+                The strong relationship between reading,
+                writing and mathematics suggests that reading
+                and writing scores contain useful predictive
+                information for mathematics performance.
+            </p>
+
+        </div>
+
+
+        <div class="insight">
+
+            <h3>
+                Categorical Features Add Context
+            </h3>
+
+            <p>
+                Lunch type, parental education, test preparation
+                and race/ethnicity show differences in average
+                performance and therefore provide additional
+                context to the prediction problem.
+            </p>
+
+        </div>
+
+
+        <div class="insight">
+
+            <h3>
+                Preprocessing Is Necessary
+            </h3>
+
+            <p>
+                Categorical variables must be converted into
+                numerical representations and numerical
+                variables need appropriate scaling before
+                they are passed to the machine learning models.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ML PIPELINE
+===================================================== -->
+
+<section
+    class="section"
+    id="pipeline"
+>
+
+    <div class="heading">
+
+        <small>
+            Machine Learning Pipeline
+        </small>
+
+        <h2>
+            How Student Performance AI works
+        </h2>
+
+    </div>
+
+
+    <div class="pipeline">
+
+
+        <div class="pipeline-card">
+
+            <strong>
+                01 · Data Ingestion
+            </strong>
+
+            <span>
+                Load the dataset, save the raw data and split
+                it into training and testing datasets.
+            </span>
+
+        </div>
+
+
+        <div class="pipeline-card">
+
+            <strong>
+                02 · Transformation
+            </strong>
+
+            <span>
+                Handle missing values, encode categorical
+                features and scale numerical features.
+            </span>
+
+        </div>
+
+
+        <div class="pipeline-card">
+
+            <strong>
+                03 · Model Training
+            </strong>
+
+            <span>
+                Train multiple regression models, compare
+                their R² scores and tune selected models.
+            </span>
+
+        </div>
+
+
+        <div class="pipeline-card">
+
+            <strong>
+                04 · Prediction
+            </strong>
+
+            <span>
+                Load the saved preprocessor and trained model
+                to predict mathematics performance.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+<footer>
+
+    Student Performance AI ·
+    End-to-End Machine Learning Project
+
+</footer>
+
+
+</body>
+
+</html>

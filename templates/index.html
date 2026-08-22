@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Performance AI</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --dark: #111827;
+            --text: #374151;
+            --muted: #6b7280;
+            --background: #f8fafc;
+            --white: #ffffff;
+            --border: #e5e7eb;
+            --green: #059669;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        nav {
+            height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            background: rgba(255,255,255,.94);
+
+            border-bottom: 1px solid var(--border);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            color: var(--dark);
+            text-decoration: none;
+
+            font-size: 19px;
+            font-weight: 850;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* IMPORTANT:
+           Dedicated style for Try Prediction button.
+        */
+
+        .try-prediction {
+            padding: 10px 17px;
+
+            border-radius: 10px;
+
+            color: white !important;
+
+            background: var(--primary);
+
+            box-shadow:
+                0 7px 18px
+                rgba(79,70,229,.20);
+
+            transition: .2s ease;
+        }
+
+        .try-prediction:hover {
+            background: var(--primary-dark);
+
+            color: white !important;
+
+            transform: translateY(-1px);
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            min-height: 680px;
+
+            display: grid;
+
+            grid-template-columns:
+                1.08fr .92fr;
+
+            align-items: center;
+
+            gap: 65px;
+
+            padding: 80px 8%;
+
+            background:
+                radial-gradient(
+                    circle at 90% 10%,
+                    #e0e7ff,
+                    transparent 35%
+                );
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 7px 13px;
+
+            margin-bottom: 20px;
+
+            border-radius: 30px;
+
+            background: #eef2ff;
+
+            color: var(--primary);
+
+            font-size: 11px;
+            font-weight: 850;
+
+            letter-spacing: .6px;
+        }
+
+        .hero h1 {
+            max-width: 750px;
+
+            color: var(--dark);
+
+            font-size:
+                clamp(43px,5.5vw,70px);
+
+            line-height: 1.03;
+
+            letter-spacing: -2.8px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero-description {
+            max-width: 650px;
+
+            margin-top: 22px;
+
+            color: var(--muted);
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+        .buttons {
+            display: flex;
+
+            gap: 13px;
+
+            margin-top: 30px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 13px 21px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            transition: .2s ease;
+        }
+
+        .btn-primary {
+            color: white;
+
+            background: var(--primary);
+
+            box-shadow:
+                0 12px 28px
+                rgba(79,70,229,.20);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            color: var(--dark);
+
+            background: white;
+
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           HERO DASHBOARD
+        ===================================================== */
+
+        .dashboard {
+            padding: 28px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 24px;
+
+            background: white;
+
+            box-shadow:
+                0 30px 70px
+                rgba(15,23,42,.10);
+        }
+
+        .dashboard-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .dashboard-header strong {
+            color: var(--dark);
+
+            font-size: 14px;
+        }
+
+        .live {
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            color: var(--green);
+
+            background: #ecfdf5;
+
+            font-size: 9px;
+            font-weight: 850;
+        }
+
+        .score-box {
+            padding: 25px;
+
+            border-radius: 18px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+        }
+
+        .score-box small {
+            opacity: .75;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        .score {
+            margin-top: 5px;
+
+            font-size: 57px;
+
+            font-weight: 900;
+
+            line-height: 1;
+        }
+
+        .score-box p {
+            margin-top: 8px;
+
+            opacity: .78;
+
+            font-size: 11px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 11px;
+
+            margin-top: 13px;
+        }
+
+        .dashboard-item {
+            padding: 15px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            background: #fafbff;
+        }
+
+        .dashboard-item strong {
+            display: block;
+
+            color: var(--dark);
+
+            font-size: 17px;
+        }
+
+        .dashboard-item span {
+            color: var(--muted);
+
+            font-size: 9px;
+        }
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .section {
+            padding: 90px 8%;
+        }
+
+        .heading {
+            max-width: 720px;
+
+            margin-bottom: 40px;
+        }
+
+        .heading small {
+            color: var(--primary);
+
+            font-size: 10px;
+
+            font-weight: 850;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .heading h2 {
+            margin-top: 7px;
+
+            color: var(--dark);
+
+            font-size: 37px;
+
+            letter-spacing: -1px;
+        }
+
+        .heading p {
+            margin-top: 10px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           ABOUT
+        ===================================================== */
+
+        .about-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 20px;
+        }
+
+        .about-card {
+            padding: 28px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 18px;
+
+            background: white;
+        }
+
+        .about-card h3 {
+            margin-bottom: 10px;
+
+            color: var(--dark);
+
+            font-size: 18px;
+        }
+
+        .about-card p {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           FEATURE CARDS
+        ===================================================== */
+
+        .feature-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 15px;
+        }
+
+        .feature {
+            padding: 23px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            background: white;
+        }
+
+        .feature-number {
+            color: var(--primary);
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            margin-bottom: 13px;
+        }
+
+        .feature h3 {
+            margin-bottom: 6px;
+
+            color: var(--dark);
+
+            font-size: 14px;
+        }
+
+        .feature p {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           PIPELINE
+        ===================================================== */
+
+        .pipeline {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 15px;
+        }
+
+        .pipeline-card {
+            padding: 23px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            background: white;
+        }
+
+        .pipeline-card strong {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: var(--dark);
+
+            font-size: 13px;
+        }
+
+        .pipeline-card span {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           CTA
+        ===================================================== */
+
+        .cta {
+            padding: 60px 30px;
+
+            border-radius: 24px;
+
+            text-align: center;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #3730a3,
+                    #4f46e5
+                );
+        }
+
+        .cta h2 {
+            font-size: 32px;
+        }
+
+        .cta p {
+            max-width: 600px;
+
+            margin: 10px auto 25px;
+
+            opacity: .8;
+
+            font-size: 13px;
+        }
+
+        .cta .btn {
+            color: var(--primary);
+
+            background: white;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            padding: 30px 8%;
+
+            border-top:
+                1px solid var(--border);
+
+            background: white;
+
+            color: var(--muted);
+
+            text-align: center;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width:900px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+
+            }
+
+            .feature-grid,
+            .pipeline {
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            .nav-links a:not(.try-prediction) {
+                display: none;
+            }
+
+            .hero {
+                padding:
+                    60px 6%;
+            }
+
+            .section {
+                padding:
+                    65px 6%;
+            }
+
+            .feature-grid,
+            .pipeline {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav>
+
+    <a href="/" class="logo">
+        Student <span>Performance AI</span>
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="#about">
+            About
+        </a>
+
+        <a href="#dataset">
+            Dataset
+        </a>
+
+        <a href="#pipeline">
+            Pipeline
+        </a>
+
+        <a
+            href="{{ url_for('predict_datapoint') }}"
+            class="try-prediction"
+        >
+            Try Prediction
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div>
+
+        <span class="badge">
+            END-TO-END MACHINE LEARNING PROJECT
+        </span>
+
+        <h1>
+            Student Performance
+            <span>AI</span>
+        </h1>
+
+        <p class="hero-description">
+
+            Predict a student's mathematics performance using
+            demographic information, academic scores and
+            machine learning.
+
+        </p>
+
+
+        <div class="buttons">
+
+            <a
+                href="{{ url_for('predict_datapoint') }}"
+                class="btn btn-primary"
+            >
+                Predict Math Score →
+            </a>
+
+            <a
+                href="#about"
+                class="btn btn-secondary"
+            >
+                Explore Project
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard">
+
+        <div class="dashboard-header">
+
+            <strong>
+                Prediction Dashboard
+            </strong>
+
+            <span class="live">
+                MODEL READY
+            </span>
+
+        </div>
+
+
+        <div class="score-box">
+
+            <small>
+                Example Prediction
+            </small>
+
+            <div class="score">
+                82.4
+            </div>
+
+            <p>
+                Predicted Mathematics Score
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+            <div class="dashboard-item">
+
+                <strong>
+                    1,000
+                </strong>
+
+                <span>
+                    Students
+                </span>
+
+            </div>
+
+
+            <div class="dashboard-item">
+
+                <strong>
+                    7
+                </strong>
+
+                <span>
+                    Input Features
+                </span>
+
+            </div>
+
+
+            <div class="dashboard-item">
+
+                <strong>
+                    R²
+                </strong>
+
+                <span>
+                    Evaluation Metric
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section
+    class="section"
+    id="about"
+>
+
+    <div class="heading">
+
+        <small>
+            About The Project
+        </small>
+
+        <h2>
+            Turning student data into predictions
+        </h2>
+
+        <p>
+            This project demonstrates a complete machine learning
+            workflow from raw data to a deployed prediction
+            application.
+        </p>
+
+    </div>
+
+
+    <div class="about-grid">
+
+        <div class="about-card">
+
+            <h3>
+                Problem Statement
+            </h3>
+
+            <p>
+                The objective is to predict a student's mathematics
+                score using demographic, socioeconomic and academic
+                features such as gender, race/ethnicity, parental
+                education, lunch type, test preparation, reading
+                score and writing score.
+            </p>
+
+        </div>
+
+
+        <div class="about-card">
+
+            <h3>
+                Project Approach
+            </h3>
+
+            <p>
+                The project performs data ingestion, train-test
+                splitting, preprocessing, categorical encoding,
+                numerical scaling, model comparison,
+                hyperparameter tuning and final prediction.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DATASET
+===================================================== -->
+
+<section
+    class="section"
+    id="dataset"
+>
+
+    <div class="heading">
+
+        <small>
+            Dataset
+        </small>
+
+        <h2>
+            Student Performance Dataset
+        </h2>
+
+        <p>
+            The dataset contains demographic information and
+            academic examination scores for student performance
+            analysis.
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <div class="feature">
+
+            <div class="feature-number">
+                01
+            </div>
+
+            <h3>
+                Gender
+            </h3>
+
+            <p>
+                Student gender category.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                02
+            </div>
+
+            <h3>
+                Race / Ethnicity
+            </h3>
+
+            <p>
+                Student group from Group A to Group E.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                03
+            </div>
+
+            <h3>
+                Parental Education
+            </h3>
+
+            <p>
+                Highest education level of a parent.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                04
+            </div>
+
+            <h3>
+                Lunch
+            </h3>
+
+            <p>
+                Standard or free/reduced lunch.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                05
+            </div>
+
+            <h3>
+                Test Preparation
+            </h3>
+
+            <p>
+                Whether the preparation course was completed.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                06
+            </div>
+
+            <h3>
+                Reading Score
+            </h3>
+
+            <p>
+                Reading examination score.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                07
+            </div>
+
+            <h3>
+                Writing Score
+            </h3>
+
+            <p>
+                Writing examination score.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-number">
+                08
+            </div>
+
+            <h3>
+                Math Score
+            </h3>
+
+            <p>
+                Target variable predicted by the model.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ML PIPELINE
+===================================================== -->
+
+<section
+    class="section"
+    id="pipeline"
+>
+
+    <div class="heading">
+
+        <small>
+            Machine Learning Pipeline
+        </small>
+
+        <h2>
+            From raw data to prediction
+        </h2>
+
+    </div>
+
+
+    <div class="pipeline">
+
+        <div class="pipeline-card">
+
+            <strong>
+                01 · Data Ingestion
+            </strong>
+
+            <span>
+                Read the source dataset, save the raw data and
+                create training and testing datasets.
+            </span>
+
+        </div>
+
+
+        <div class="pipeline-card">
+
+            <strong>
+                02 · Data Transformation
+            </strong>
+
+            <span>
+                Handle missing values, encode categorical
+                variables and scale numerical features.
+            </span>
+
+        </div>
+
+
+        <div class="pipeline-card">
+
+            <strong>
+                03 · Model Training
+            </strong>
+
+            <span>
+                Train multiple regression algorithms, evaluate
+                them and perform hyperparameter tuning.
+            </span>
+
+        </div>
+
+
+        <div class="pipeline-card">
+
+            <strong>
+                04 · Prediction
+            </strong>
+
+            <span>
+                Load the saved preprocessing pipeline and model
+                to generate predictions for new students.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CTA
+===================================================== -->
+
+<section class="section">
+
+    <div class="cta">
+
+        <h2>
+            Ready to predict?
+        </h2>
+
+        <p>
+            Enter student information and see what the trained
+            machine learning model predicts.
+        </p>
+
+        <a
+            href="{{ url_for('predict_datapoint') }}"
+            class="btn"
+        >
+            Try Student Performance AI →
+        </a>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    Student Performance AI ·
+    End-to-End Machine Learning Project
+
+</footer>
+
+
+</body>
+
+</html>
