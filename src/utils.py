@@ -112,6 +112,56 @@ def save_object(file_path, obj):
 
 
 # ============================================================
+# LOAD OBJECT FUNCTION
+# ============================================================
+# This function loads a Python object that was previously
+# saved using the save_object() function.
+#
+# In our ML project, we use it to load:
+#
+#     artifacts/model.pkl
+#     artifacts/preprocessor.pkl
+#
+# This is required during prediction because we need to
+# load the trained model and preprocessing object.
+# ============================================================
+
+def load_object(file_path):
+
+    """
+    Load a Python object from a pickle file.
+
+    Parameters
+    ----------
+    file_path : str
+        Path of the pickle file.
+
+    Returns
+    -------
+    object
+        The Python object stored inside the pickle file.
+    """
+
+    try:
+
+        # Open the pickle file in read-binary mode.
+        #
+        # "rb" means:
+        # r → read
+        # b → binary
+        with open(file_path, "rb") as file_obj:
+
+            # Load and return the Python object
+            # stored inside the pickle file.
+            return pickle.load(file_obj)
+
+    except Exception as e:
+
+        # Convert the original error into our
+        # custom exception with detailed information.
+        raise CustomException(e, sys)
+
+# ============================================================
 # EVALUATE MULTIPLE MODELS
 # ============================================================
 # This function trains multiple machine learning models
@@ -615,6 +665,7 @@ def tune_models(
             e,
             sys
         )
+
 
 # ==================================================================
 # Code without Hyperparameters Tunning
